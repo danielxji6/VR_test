@@ -13,29 +13,30 @@
 </head>
 <body>
   <a-scene>
-    <a-scene>
-      <a-assets>
-        <img id="enemy-sprite" crossorigin="" src="https://ucarecdn.com/f11bb3e6-ceb4-427c-bcaa-351cabac37d5/">
+    <a-assets>
+      <img id="enemy-sprite" crossorigin="" src="https://ucarecdn.com/f11bb3e6-ceb4-427c-bcaa-351cabac37d5/">
 
-        <!-- Template component lets us use Handlebars, Jade, Mustache, Nunjucks. -->
-        <script id="enemies" type="text/x-nunjucks-template">
-          <a-entity layout="type: circle; radius: 5" position="0 0.5 0">
-            <a-animation attribute="rotation" dur="30000" easing="linear" repeat="indefinite" to="0 360 0"></a-animation>
+      <script id="enemies" type="text/x-nunjucks-template">
+        <a-entity layout="type: circle; radius: 5" position="0 0.5 0">
+          <a-animation attribute="rotation" dur="30000" easing="linear" repeat="indefinite" to="0 360 0"></a-animation>
 
-            {% for x in range(num) %}
-            <a-image look-at="#player" src="#enemy-sprite" transparent="true"></a-image>
-            {% endfor %}
-          </a-entity>
-        </script>
-      </a-assets>
+          {% for x in range(num) %}
+          <a-image look-at="#player" src="#enemy-sprite" transparent="true"></a-image>
+          {% endfor %}
+        </a-entity>
+      </script>
 
-      <!-- Behold, the power of components. -->
-      <a-entity template="src: #enemies" data-num="10"></a-entity>
+      <!-- Laser. -->
+      <a-mixin id="laser" geometry="primitive: cylinder; radius: 0.05; translate: 0 -2 0" material="color: green; metalness: 0.2; opacity: 0.4; roughness: 0.3" rotation="90 0 0"></a-mixin>
+    </a-assets>
 
-      <a-camera id="player" position="0 1.8 0"></a-camera>
+    <a-entity template="src: #enemies" data-num="10"></a-entity>
 
-      <a-sky color="#252243"></a-sky>
-    </a-scene>
+    <!-- Add spawner and click-listener to player. -->
+    <a-camera id="player" position="0 1.8 0" spawner="mixin: laser; on: click" click-listener></a-camera>
 
-    <script src="js/app.js"></script>
-  </body>
+    <a-sky color="#252243"></a-sky>
+  </a-scene>
+
+  <script src="js/advance_app.js"></script>
+</body>
