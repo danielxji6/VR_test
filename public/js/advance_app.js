@@ -1,5 +1,16 @@
 console.log("advance_app.js loaded");
 
+// projectile component to have an entity travel straight.
+AFRAME.registerComponent('projectile', {
+  schema: {
+    speed: { default: -0.4 }
+  },
+
+  tick: function () {
+    this.el.object3D.translateY(this.data.speed);
+  }
+});
+
 // spawner component to generate an entity on an event.
 AFRAME.registerComponent('spawner', {
   schema: {
