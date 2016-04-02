@@ -8,6 +8,7 @@
     <script src="https://rawgit.com/ngokevin/aframe-layout-component/master/dist/aframe-layout-component.min.js"></script>
     <!-- Drop in another component and use it from markup. -->
     <script src="https://rawgit.com/ngokevin/aframe-template-component/master/dist/aframe-template-component.min.js"></script>
+    <script src="js/advance_app.js"></script>
   </html>
   <title>VR Test Advance</title>
 </head>
@@ -21,22 +22,24 @@
           <a-animation attribute="rotation" dur="30000" easing="linear" repeat="indefinite" to="0 360 0"></a-animation>
 
           {% for x in range(num) %}
-          <a-image look-at="#player" src="#enemy-sprite" transparent="true"></a-image>
+          <a-image class="enemy" look-at="#player" src="#enemy-sprite" transparent="true">
+            <!-- Attach collision handler animations. -->
+            <a-animation attribute="opacity" begin="collider-hit" dur="400" ease="linear" from="1" to="0"></a-animation>
+            <a-animation attribute="scale" begin="collider-hit" dur="400" ease="linear" to="0 0 0"></a-animation>
+          </a-image>
           {% endfor %}
         </a-entity>
       </script>
 
-      <!-- Laser. -->
-      <a-mixin id="laser" geometry="primitive: cylinder; radius: 0.05; translate: 0 -2 0" material="color: green; metalness: 0.2; opacity: 0.4; roughness: 0.3" rotation="90 0 0" projectile></a-mixin>
+      <!-- Attach collider to laser. -->
+      <a-mixin id="laser" geometry="primitive: cylinder; radius: 0.05; translate: 0 -2 0" material="color: green; metalness: 0.2; opacity: 0.4; roughness: 0.3" rotation="90 0 0" projectile collider="target: .enemy"></a-mixin>
     </a-assets>
 
     <a-entity template="src: #enemies" data-num="10"></a-entity>
 
-    <!-- Add spawner and click-listener to player. -->
     <a-camera id="player" position="0 1.8 0" spawner="mixin: laser; on: click" click-listener></a-camera>
 
     <a-sky color="#252243"></a-sky>
   </a-scene>
 
-  <script src="js/advance_app.js"></script>
 </body>
